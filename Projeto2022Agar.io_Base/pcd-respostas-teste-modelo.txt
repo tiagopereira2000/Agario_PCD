@@ -1,0 +1,79 @@
+6. [7 valores]
+
+class ClienteRemoto{
+
+    public void main(String[] args){
+        if(args.length != 2)
+            throw new IllegalArgumentException("IP e PORTO pff");
+        InetAddress addr;
+        try{
+            addr = new InetAddress.getByName(args[0]);
+            Socket socket = new Socket(addr, Integer.parseInt(args[1]));
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            List<PacManEntity> paredes = (List<PacManEntity>) in.readObject();
+            for(PacManEntity e: paredes){
+                updateGUI(e);
+            }
+            while(true){
+                updateGUI((PacManEntity) in.readObject());
+            }
+        } catch(UnkownHostException | IOException | ClassNotFoundException | NumberFormatException e){
+            e.printTrackTrace();
+        }
+    }
+}
+
+
+class Servidor {
+    private List<ObjectOutputStream> canaisConectados =
+        Collections.synchronizedList(new ArrayList<ObjectOutputStream>());
+    private final int PORTO = 8080;
+    private Board board;
+
+    class ConectarCliente extends Thread {
+        ConectarCliente(Socket socket){
+            out = new ObjectOutputStream(socket.getOutputStream());
+            canaisConectados.add(out);
+        }
+        private ObjectOutputStream out;
+
+        //Esta thread vai enviar as paredes do jogo ao cliente para este
+        //criar a sua board
+        public void run{
+            List<PacManEntity> paredes = new LinkedList<PacManEntity>();
+            for( int i=0; i < board.getWidth(); i++)
+                for(int j=0; j< board.getHeigth(); j++)
+                    if(board.isOcupied(i,j) && board.getEntity(i,j) instanceof Wall)
+                        paredes.add(board.getEntity(i,j);
+            try{
+                out.writeObject(paredes);
+            } catch(IOexception e){ e.printTrackTrace(); }
+        }
+    }
+
+    void updateEntityState(PacManEntity entity){
+        try{
+            for(ObjectOutputStream out: canaisConectados){
+                out.writeObject(entity);
+            }
+
+        } catch( IOException e){
+            //
+        }
+    }
+
+
+    void startServing(){
+        ServerSocket ss = new ServerSocket(PORTO);
+        while(true){
+            try{
+                //Quando receber um pedido de conexão aceita-o e cria uma instância para a conexão
+                new ConectarCliente(ss.accept()).start();
+            }
+        }
+    }
+
+    public void main(String[] args){
+        new Servidor().startServing();
+    }
+}

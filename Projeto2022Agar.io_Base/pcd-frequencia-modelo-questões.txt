@@ -1,0 +1,83 @@
+
+PCD-Teste Modelo
+
+
+1. [1,5 valores] Explique o que é uma ThreadPool e qual a sua utilidade. Dê um exemplo de uma situação
+em que a aplicação de uma ThreadPool não seria adequada.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+2. [1,5 valores] Descreva o que acontece quando um processo ligeiro notifica um objeto. Considere os tres
+cenários possıveis, assumindo que se usa o metodo notify.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+3. [1,5 valores] Quando é executado o metodo join de um processo ligeiro o que acontece?
+
+-----------------------------------------------------------------------------------------------------------------------------
+4. [7 valores] Considere o jogo do Pacman, conforme foi abordado no projeto deste ano. Admita que se
+pretende que, na colocação inicial dos fantasmas, existam duas células disponíveis para colocar os fantasmas,
+identificadas atraves do atributo ghostInitialPlacementCells da classe List<Point>. Admita tambem
+que, á semelhanca do projeto, existe o atributo PacManEntity[][] board onde é guardada a informacao
+das entidades existentes no tabuleiro.
+
+Implemente o metodo void placeGhost(Ghost ghost) de acordo com estas indicacoes.
+Esta questão deve ser resolvida com auxılio de um semaforo DualSemaphore, cuja API se descreve a seguir.
+Esta classe representa um semaforo com o número inicial e maximo de duas licenças. Admita que existe um
+semaforo deste tipo devidamente inicializado no atributo semaphore.
+
+Se não conseguir aplicar o sem´aforo, pode apresentar outra solucao que não o use. Caso opte por usar o
+semaforo e este tenha de ser manipulado noutro metodo, indique qual o método e que métodos do semáforo
+seriam chamados a.
+
+class DualSemaphore {
+	void acquire (); // Acquires a permit from this semaphore , blocking until one is available .
+	void release();  // Releases a permit , returning it to the semaphore .
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+5. [1,5 valores] Implemente a classe DualSemaphore descrita no exerc´ıcio anterior.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+6. [7 valores] Considere que o jogo Pacman, tal como abordado no projeto deste ano, pretendia permitir a
+visualizacão remota do decorrer do jogo. Desta forma, o jogo estaria a correr num computador com endereco
+e porto bem conhecidos (considere neste caso o IP 192.168.1.1 e a porta 8080) e poderia ser visualizado numcliente remoto.
+
+Implemente a classe relativa ao cliente remoto, tomando em conta o seguinte:
+
+	-Quando o cliente remoto é ativado, deve ligar-se ao servidor, estabelecendo um canal de escrita de
+	objetos.
+
+	-Este cliente remoto deve poder, a qualquer momento, receber do servidor informacao sobre o estado do
+	jogo.
+
+	-Admita que existe já implementado na classe relativa ao cliente um metodo void
+	updateGUI(PacManEntity entity) que fará a atualização da interface gráfica que exibe o jogo.
+	Este método deve ser chamado de cada vez que é recebida informacão do servidor.
+
+Implemente também a classe servidor, apenas nas suas valências para enviar o estado do jogo aos clientes
+remotos:
+ 	-Desde o seu lancamento, o servidor deve estar disponível para receber ligações de clientes remotos.
+
+	-Deve haver a maxima disponibilidade para receber novas ligaçoes de clientes remotos, sem comprometer
+	a disponibilidade do servidor para executar outras tarefas e lidar com outros clientes.
+
+	-Quando é recebida a ligação de um cliente remoto, o servidor deve enviar a informação sobre todos os
+	elementos estáticos no tabuleiro (considere neste caso apenas as paredes, da classe Wall), numa lista
+	de PacManEntity. Para tal vai ter de percorrer todas as posições válidas do jogo e escolher aquelas
+	onde se encontram paredes.
+
+	-Implemente o metodo void updateEntityState(PacManEntity entity) , que trata do envio informação atualizada dessa entidade a todos os clientes remotos atualmente ligados. Este método poderá
+	depois ser invocado cada vez que uma entidade do jogo mude de estado ou posição, mas não tem de se
+	preocupar com essa invocação nesta resposta.
+
+E necessário definir o metodo main(), bem como todos os outros relevantes, para o cliente remoto e para o ´
+servidor. Deve ser dada indicação aproximada de como seriam tratadas as exceções relevantes.
+
+Refira também se seria necessário fazer alguma alteração nas classes já existentes no projeto para que a
+funcionalidade descrita nesta pergunta possa funcionar.
+
+RESPOSTA:
+
